@@ -1,8 +1,11 @@
 import Phaser from 'phaser';
 
-import tilesImg2 from '../../assets/map/basictiles.png';
-import tilesJson2 from '../../assets/map/world.json';
-import characterImg from '../../assets/characters.png';
+import tilesImg from '../../assets/map/hyptosis_til-art-batch-2.png';
+import tilesJson from '../../assets/map/world.json';
+import characterImg from '../../assets/player.png';
+import coin from '../../assets/coin.png';
+import dragon from '../../assets/skyll.png';
+
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -11,23 +14,27 @@ export default class GameScene extends Phaser.Scene {
 
   init(){
     this.score = 0
-    this.life = 3
+    this.life = 5
   }
 
   preload() {
-    this.load.image('tiles', tilesImg2);
-    this.load.tilemapTiledJSON('map', tilesJson2);
-    this.load.spritesheet('player', characterImg, { frameWidth: 16, frameHeight: 16 });
+    this.load.image('tiles', tilesImg);
+    this.load.tilemapTiledJSON('map', tilesJson);
+    this.load.spritesheet('player', characterImg, { frameWidth: 24, frameHeight: 32 });
+    this.load.spritesheet('coin', coin, { frameWidth: 32, frameHeight: 32 });
+    this.load.spritesheet('dragon', dragon, { frameWidth: 32, frameHeight: 32 });
   }
 
   create() {
     const map = this.make.tilemap({ key: 'map' });
-    const tiles = map.addTilesetImage('town', 'tiles');
-    const grass = map.createLayer('Grass', tiles, 0, 0);
-    const obstacles = map.createLayer('Obstacles', tiles, 0, 0);
+    const tiles = map.addTilesetImage('field', 'tiles');
+    const grass = map.createLayer('floor', tiles, 0, 0);
+    const obstacles = map.createLayer('obstacle', tiles, 0, 0);
     obstacles.setCollisionByExclusion([-1]);
 
-    this.player = this.physics.add.sprite(1080, 73, 'player', 6);
+    this.player = this.physics.add.sprite(10, 10, 'player', 7);
+    // this.coin = this.physics.add.sprite(10, 10, 'coin', 7);
+    // this.dragon = this.physics.add.sprite(10, 10, 'dragon', 7);
 
     this.physics.world.bounds.width = map.widthInPixels;
     this.physics.world.bounds.height = map.heightInPixels;
@@ -39,25 +46,25 @@ export default class GameScene extends Phaser.Scene {
 
     this.anims.create({
       key: 'left',
-      frames: this.anims.generateFrameNumbers('player', { frames: [19, 20, 19, 21]}),
+      frames: this.anims.generateFrameNumbers('player', { frames: [10, 9, 10, 11]}),
       frameRate: 10,
       repeat: -1
     });
     this.anims.create({
       key: 'right',
-      frames: this.anims.generateFrameNumbers('player', { frames: [31, 30, 31, 32] }),
+      frames: this.anims.generateFrameNumbers('player', { frames: [4, 5, 4, 3] }),
       frameRate: 10,
       repeat: -1
     });
     this.anims.create({
       key: 'up',
-      frames: this.anims.generateFrameNumbers('player', { frames: [43, 42, 43, 44]}),
+      frames: this.anims.generateFrameNumbers('player', { frames: [1, 0, 1, 2]}),
       frameRate: 10,
       repeat: -1
     });
     this.anims.create({
       key: 'down',
-      frames: this.anims.generateFrameNumbers('player', { frames: [ 7, 6, 7, 8 ] }),
+      frames: this.anims.generateFrameNumbers('player', { frames: [ 7, 6, 7, 8] }),
       frameRate: 10,
       repeat: -1
     });
@@ -66,28 +73,36 @@ export default class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.player, obstacles);
 
     //--------------------------
-    this.frog = this.physics.add.group();
+    this.coin = this.physics.add.group();
+    
+    this.coinGen();
+        // for(var i = 0; i < 30; i++) {
+        //     var x = Phaser.Math.RND.between(0, this.physics.world.bounds.width);
+        //     var y = Phaser.Math.RND.between(0, this.physics.world.bounds.height);
+        //     // parameters are x, y, width, height
+        //     this.spawns.create(x, y, 20, 20);            
+        // } 
 
-    const frogGenLoop = this.time.addEvent({
-      delay: 2000,
-      callback: this.frogGen,
-      callbackScope: this,
-      loop: true
-    });
+    // const coinGenLoop = this.time.addEvent({
+    //   delay: 2000,
+    //   callback: this.coinGen,
+    //   callbackScope: this,
+    //   loop: true
+    // });
 
-    this.physics.add.overlap(this.player, this.frog, this.onMeetFrog, false, this);
+    this.physics.add.overlap(this.player, this.coin, this.onMeetCoin, false, this);
 
     //-------------------------------------
-    this.enemy = this.physics.add.group();
+    this.dragon = this.physics.add.group();
 
-    const enemyGenLoop = this.time.addEvent({
+    const dragonGenLoop = this.time.addEvent({
       delay: 3000,
-      callback: this.enemyGen,
+      callback: this.dragonGen,
       callbackScope: this,
       loop: true
     });
 
-    this.physics.add.overlap(this.player, this.enemy, this.onMeetEnemy, false, this);
+    this.physics.add.overlap(this.player, this.dragon, this.onMeetDragon, false, this);
 
     //----------------------------------
 
@@ -132,7 +147,7 @@ export default class GameScene extends Phaser.Scene {
     }
   }
 
-  onMeetFrog(player, zone) {
+  onMeetCoin(player, zone) {
     // we move the zone to some other location
     zone.x = Phaser.Math.RND.between(0, this.physics.world.bounds.width);
     zone.y = Phaser.Math.RND.between(0, this.physics.world.bounds.height);
@@ -144,7 +159,7 @@ export default class GameScene extends Phaser.Scene {
     this.score += 10;
     this.scoreText.setText(`Score: ${this.score}`)
   }
-  onMeetEnemy(player, zone) {
+  onMeetDragon(player, zone) {
     // we move the zone to some other location
     zone.x = Phaser.Math.RND.between(0, this.physics.world.bounds.width);
     zone.y = Phaser.Math.RND.between(0, this.physics.world.bounds.height);
@@ -157,25 +172,23 @@ export default class GameScene extends Phaser.Scene {
     this.lifeText.setText(`Life: ${this.life}`)
   }
 
-  frogGen(){
-    for(let i = 0; i < 5; i++) {
+  coinGen(){
+    for(let i = 0; i < 20; i++) {
       const x = Phaser.Math.RND.between(0, this.physics.world.bounds.width);
       const y = Phaser.Math.RND.between(0, this.physics.world.bounds.height);
-      const v = Phaser.Math.RND.between(10, 20)
 
-      this.frog.create(x, y, 'player', 48);
-      this.frog.setVelocityX(v)
+      this.coin.create(x, y, 'coin', 3);
     }
   }
 
-  enemyGen(){
+  dragonGen(){
     for(let i = 0; i < 10; i++) {
       const x = Phaser.Math.RND.between(0, this.physics.world.bounds.width);
       const y = Phaser.Math.RND.between(0, this.physics.world.bounds.height);
       const v = Phaser.Math.RND.between(20, 40)
 
-      this.enemy.create(x, y, 'player', 58);
-      this.enemy.setVelocityX(-v)
+      this.dragon.create(x, y, 'dragon', 1);
+      this.dragon.setVelocityX(-v)
     }
   }
 
