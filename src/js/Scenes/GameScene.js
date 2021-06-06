@@ -5,7 +5,7 @@ import tilesJson from '../../assets/map/world.json';
 import characterImg from '../../assets/player.png';
 import coin from '../../assets/coin.png';
 import dragon from '../../assets/skyll.png';
-
+import updateScore from '../Api/updateScores.js';
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -152,14 +152,12 @@ export default class GameScene extends Phaser.Scene {
     zone.x = Phaser.Math.RND.between(0, this.physics.world.bounds.width);
     zone.y = Phaser.Math.RND.between(0, this.physics.world.bounds.height);
 
-    // shake the world
-    this.cameras.main.shake(300);
-
     // start battle
     this.score += 10;
     this.scoreText.setText(`Score: ${this.score}`)
   }
-  onMeetDragon(player, zone) {
+
+  async onMeetDragon(player, zone) {
     // we move the zone to some other location
     zone.x = Phaser.Math.RND.between(0, this.physics.world.bounds.width);
     zone.y = Phaser.Math.RND.between(0, this.physics.world.bounds.height);
@@ -169,7 +167,12 @@ export default class GameScene extends Phaser.Scene {
 
     // start battle
     this.life -= 1;
-    this.lifeText.setText(`Life: ${this.life}`)
+    this.lifeText.setText(`Life: ${this.life}`);
+
+    if (this.life === 0) {
+      this.scene.start('Leaderboard');
+      await updateScore({ user: this.sys.game.globals.name, score: this.sys.game.globals.score });
+    }
   }
 
   coinGen(){
