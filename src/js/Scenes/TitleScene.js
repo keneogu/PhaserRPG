@@ -28,7 +28,7 @@ export default class TitleScene extends Phaser.Scene {
       this.sys.game.globals.bgMusic = this.bgMusic;
     }
 
-    this.message = this.add.text(config.width / 2, 64, 'Welcome, Alien', {
+    this.message = this.add.text(config.width / 2, 64, 'Welcome, Kene', {
       color: '#FFFFFF',
       fontSize: 16,
       fontStyle: 'bold',
@@ -52,7 +52,7 @@ export default class TitleScene extends Phaser.Scene {
       this.sys.game.globals.name = input.value;
       if (this.sys.game.globals.name !== '') {
         this.message.setText(`Welcome ${this.sys.game.globals.name}`);
-        this.instruction.setText('Welcome to Wonderland. Press Play to start the game');
+        this.instruction.setText('Welcome to the lost Forest. Press Play to start the game');
         input.value = '';
       }
     });
