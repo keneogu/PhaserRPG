@@ -1,4 +1,4 @@
-## Coder Runner
+## Phaser RPG
 
 > Phaser RPG game made with phaser JS
 
