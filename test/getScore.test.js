@@ -1,4 +1,4 @@
-import getScores from '../js/Api/getScore.js';
+import getScores from '../src/js/Api/getScore.js';
 
 require('jest-fetch-mock').enableMocks();
 

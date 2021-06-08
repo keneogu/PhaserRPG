@@ -1,4 +1,4 @@
-import updateScores from '../js/Api/updateScore.js';
+import updateScores from '../src/js/Api/updateScore.js';
 
 require('jest-fetch-mock').enableMocks();
 
