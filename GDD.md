@@ -18,7 +18,7 @@
 
 ### Scoring System
 
-- By collect a coin, a player gets 10 points.
+- By collecting a coin, a player gets 10 points.
 - With the bite of each huge maggot a player looses 1 life.
 - A player can view self score along with the top 10 scorers at Leader Board.
 
