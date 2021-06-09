@@ -22,13 +22,13 @@ export default class TitleScene extends Phaser.Scene {
 
     this.model = this.sys.game.globals.model;
     if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
-      this.bgMusic = this.sound.add('bgMusic', { volume: 0.5, loop: true });
+      this.bgMusic = this.sound.add('bgMusic', { volume: 0.3, loop: true });
       this.bgMusic.play();
       this.model.bgMusicPlaying = true;
       this.sys.game.globals.bgMusic = this.bgMusic;
     }
 
-    this.message = this.add.text(config.width / 2, 64, 'Welcome, Kene', {
+    this.message = this.add.text(config.width / 2, 64, 'Welcome, please enter your name and press enter', {
       color: '#FFFFFF',
       fontSize: 16,
       fontStyle: 'bold',
@@ -40,7 +40,7 @@ export default class TitleScene extends Phaser.Scene {
     document.querySelector('input').placeholder = 'Enter your name';
     document.querySelector('input').style.textAlign = 'center';
 
-    this.instruction = this.add.text(config.width / 2, 160, 'Press ENTER to Register', {
+    this.instruction = this.add.text(config.width / 2, 160, 'Press Play to use the default name Kene to play', {
       color: '#FFFFFF',
       fontSize: 16,
       fontStyle: 'bold',

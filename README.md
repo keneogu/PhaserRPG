@@ -2,9 +2,16 @@
 
 > Phaser RPG game made with phaser JS
 
+The PhaserRPG game which i called the lost forest, is a game where the goal of the game is to collect as many coins as possible while avoiding the man eating maggots which are the enemies.
+
+- The player finds himself in an unknown forest called the lost forest.
+- He tries to collect as many coins as he can as it's the only way he can trade for his freedom and leave the forest.
+- There are huge man-eat maggots which can harm him. With the bite of each maggot he loses one life.
+- Press up, down, left and right arrow keys to make the player walk in respective direction.
+- Help the player collect more coins and increase his scores.
+
 ![screenshot](src/assets/screenshott.png)
 
-The PhaserRPG game which i called the lost forest, is a game where the goal of the game is to collect as many coins as possible while avoiding the man eating maggots which are the enemies.
 ## Built With 
 
 - Phaser 3 Game Engine
@@ -22,6 +29,7 @@ The PhaserRPG game which i called the lost forest, is a game where the goal of t
 
 - Modern Browser (Chrome, Firefox...)
 - Node.js
+
 ## Getting Started
 
 To get a local copy up and running follow these simple example steps.

@@ -39,8 +39,6 @@ export default class GameScene extends Phaser.Scene {
     obstacles.setCollisionByExclusion([-1]);
 
     this.player = this.physics.add.sprite(10, 10, 'player', 7);
-    // this.coin = this.physics.add.sprite(10, 10, 'coin', 7);
-    // this.dragon = this.physics.add.sprite(10, 10, 'dragon', 7);
 
     this.physics.world.bounds.width = map.widthInPixels;
     this.physics.world.bounds.height = map.heightInPixels;
@@ -128,7 +126,7 @@ export default class GameScene extends Phaser.Scene {
     this.scoreText.scrollFactorX = 0;
     this.scoreText.scrollFactorY = 0;
 
-    this.lifeText = this.add.text(720, 8, 'Life: 3', {
+    this.lifeText = this.add.text(720, 8, 'Life: 5', {
       fontSize: '16px',
       fill: '#fff',
       backgroundColor: '#000',
